@@ -60,14 +60,17 @@ def fetch_data_from_url(url):
         accepted_answer_text = []
         if isinstance(json_data["mainEntity"]["acceptedAnswer"], dict): # ディクショナリの場合の処理
             accepted_answer_text.append(json_data["mainEntity"]["acceptedAnswer"]["text"])
+            accepted_answer_text.append("\n")
         
         elif isinstance(json_data["mainEntity"]["acceptedAnswer"], list): # リストの場合の処理
             for answer in json_data["mainEntity"]["acceptedAnswer"]:
-                accepted_answer_text.append(answer["text"])    
+                accepted_answer_text.append(answer["text"]) 
+                accepted_answer_text.append("\n")   
         else:
             print("No accepted answer found.")
     except Exception as e:
         print(f"accepted answer取得に失敗したか、該当項目が存在しませんでした：{e}")
+        accepted_answer_text.append("(受け入れられた良い回答は無し)\n")
 
     whole_text = ""
     whole_text += "[質問]\n"
@@ -129,7 +132,7 @@ def main():
 
                 print(row_text)
 
-                file.write(f"タイトル: {title}\n本文: {row_text}\n製品カテゴリ: {product}\n質問カテゴリ: {category}\n質問タイプ分類: {qtype}\n回答に利用したリソース: {aresource}\n\n\n")
+                file.write(f"---\n\nタイトル: {title}\n本文: {row_text}\n製品カテゴリ: {product}\n質問カテゴリ: {category}\n質問タイプ分類: {qtype}\n回答に利用したリソース: {aresource}\n\n\n")
         
 
             except Exception as e:
